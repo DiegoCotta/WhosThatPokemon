@@ -19,7 +19,6 @@ import model.Pokemon
 import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 import model.Genaration
-import shared.Image
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
@@ -42,26 +41,23 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         button.setOnClickListener {
             if (!wasAnswered) {
                 if (edit_text.text.toString().toLowerCase() == pokemon?.name?.toLowerCase()) {
-                    edit_text.setTextColor(ContextCompat.getColor(this, R.color.correct))
-                    val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.correct))
-                    ViewCompat.setBackgroundTintList(edit_text, colorStateList);
+                    tvAnswer.setTextColor(ContextCompat.getColor(this, R.color.correct))
+                    tvAnswer.text = "CORRECT"
                 } else {
-                    edit_text.setTextColor(ContextCompat.getColor(this, R.color.wrong))
-                    val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.wrong))
-                    ViewCompat.setBackgroundTintList(edit_text, colorStateList);
-                    edit_text.setText(pokemon?.name)
+                    tvAnswer.setTextColor(ContextCompat.getColor(this, R.color.wrong))
+                    edit_text.setText(pokemon?.name.toUpperCase())
+                    tvAnswer.text = "WRONG"
                 }
+                tvAnswer.visibility = View.VISIBLE
                 edit_text.isEnabled = false
                 pokemon_sprite.colorFilter = null
                 button.text = "next"
             } else {
+                tvAnswer.visibility = View.INVISIBLE
                 edit_text.isEnabled = true
                 edit_text.setText("")
                 searchPokemon()
                 button.text = "check"
-                edit_text.setTextColor(ContextCompat.getColor(this, R.color.pokemon_yellow))
-                val colorStateList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.pokemon_yellow))
-                ViewCompat.setBackgroundTintList(edit_text, colorStateList);
             }
             wasAnswered = !wasAnswered
         }

@@ -7,6 +7,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var answerLabel: UILabel!
     var alert : UIAlertController!
     
     internal var api = PokemonApi()
@@ -27,6 +28,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         self.picker.delegate = self
         self.picker.dataSource = self
+        
+        textField.backgroundColor = UIColor(red:0.86, green:0.08, blue:0.08, alpha:1.0)
         
         alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
         
@@ -107,15 +110,19 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         if let p = pokemon {
             if (!wasAnswered) {
                 if (textField.text?.caseInsensitiveCompare(p.name) == .orderedSame){
-                    textField.textColor = UIColor(red:0.16, green:0.30, blue:0.02, alpha:1.0)
+                    answerLabel.textColor = UIColor(red:0.16, green:0.30, blue:0.02, alpha:1.0)
+                    answerLabel.text = "CORRECT"
                 } else {
-                    textField.textColor = UIColor(red:0.46, green:0.00, blue:0.00, alpha:1.0)
-                    textField.text = p.name
+                    answerLabel.textColor = UIColor(red:0.46, green:0.00, blue:0.00, alpha:1.0)
+                    textField.text = p.name.uppercased()
+                    answerLabel.text = "WRONG"
                 }
                 pokemonView.image = pokemonSprit
                 button.setTitle("Next" , for: .normal)
                 textField.isEnabled = false
+                answerLabel.isHidden = false
             } else {
+                answerLabel.isHidden = true
                 searchPokemon()
                 textField.text = ""
                 textField.isEnabled = true
